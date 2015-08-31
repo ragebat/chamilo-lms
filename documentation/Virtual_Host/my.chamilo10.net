@@ -1,0 +1,66 @@
+<VirtualHost *:80>
+  ServerAdmin root@localhost
+  DocumentRoot /var/www/my.chamilo10.net/www
+  ServerName my.chamilo10.net
+  ErrorLog  /var/log/apache2/my.chamilo10.net-error.log
+  CustomLog /var/log/apache2/my.chamilo10.net-access.log combined
+
+  ErrorDocument 401 /public/error-401.html
+  DirectoryIndex index.php index.html
+  Options Indexes FollowSymLinks
+
+  <LocationMatch "/*/.hg">
+	order deny,allow
+	deny from all
+  </LocationMatch>
+
+  <Directory ~/.>
+        AllowOverride None
+	Options -Indexes
+  </Directory>
+
+  <Directory "/var/www/my.chamilo10.net/www">
+	RewriteEngine On
+	RewriteCond %{QUERY_STRING} ^id=(.*)$
+	RewriteRule ^([^/.]+)/?$ user.php?$1 [L]
+	RewriteRule ^certificates/$ certificates/index.php?id=%1 [L]
+	RewriteRule ^courses/([^/]+)/$ app/course_home/course_home.php?cDir=$1 [QSA,L]
+	RewriteRule ^courses/([^/]+)/index.php$ main/course_home/course_home.php?cDir=$1 [QSA,L]
+	RewriteRule ^courses/([^/]+)/document/(.*)$ main/document/download.php?doc_url=/$2&cDir=$1 [QSA,L]
+	RewriteRule ^courses/([^/]+)/work/(.*)$ main/work/download.php?file=work/$2&cDir=$1 [QSA,L]
+	RewriteRule ^courses/([^/]+)/upload/(.*)$ main/courses/$1/upload/$2 [QSA,L]
+	RewriteRule ^courses/([^/]+)/course-pic85x85.png$ main/courses/$1/course-pic85x85.png [QSA,L]
+	RewriteRule ^courses/([^/]+)/course-pic.png$ app/courses/$1/course-pic.png [QSA,L]
+	RewriteRule ^session/(\d{1,})/about/?$ main/session/about.php?session_id=$1 [L]
+  </Directory>
+
+  php_value display_errors Off
+  php_value log_errors On
+  php_value display_startup_errors Off
+  php_value post_max_size 300M
+  php_value upload_max_filesize 300M
+# EALL  php_admin_value error_reporting 6143
+# E_ALL & ^E_NOTICE
+  php_admin_value error_reporting 6135
+  php_admin_value session.save_path /var/www/my.chamilo10.net/sessions/
+#  php_admin_value xdebug.default_enable 1
+#  php_admin_value xdebug.show_exception_trace 1
+#  php_admin_value xdebug.auto_trace On
+#  php_admin_value xdebug.auto_profile On
+#  php_admin_value xdebug.collect_params On
+#  php_admin_value xdebug.collect_return On
+#  php_admin_value xdebug.collect_vars On
+#  php_admin_value xdebug.collect_includes On
+#  php_admin_value xdebug.dump.SESSION On
+#  php_admin_value xdebug.dump.GLOBALS On
+#  php_admin_value xdebug.dump_once On
+#  php_admin_value xdebug.dump_undefined On
+#  php_admin_value xdebug.profiler_enable 1
+#  php_admin_value xdebug.profiler_output_dir /tmp
+  php_admin_value suhosin.post.max_vars 1024
+  php_admin_value suhosin.request.max_vars 1024
+  php_admin_value short_open_tag Off
+  php_value session.cookie_httponly 1
+
+</VirtualHost>
+
