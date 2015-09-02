@@ -786,9 +786,40 @@ por ejemplo. El efecto debería ser inmediato.
 <hr style="width: 100%; height: 2px;" />
 <h2><a name="14._alter_conf"></a>14. Configuraciones opcionales para Apache y Nginx</h2>
 <p>
-Dadas las nuevas actualizaciones de los servidores web y la fragilidad en cuanto a seguridad de archivos facilmente localizables por atacantes como los htaccess, se necesita
-restringir las configuraciones a un solo archivo. A continuación se muestran dos ejemplos de configuración de modo que no se dependa del archivo htaccess.
+Dadas las nuevas actualizaciones de los servidores web y la fragilidad en cuanto a seguridad de archivos facilmente localizables por atacantes como los htaccess, es necesario restringir las configuraciones a un solo archivo. A continuación se muestran dos ejemplos de configuración de modo que no se dependa del archivo htaccess.
+
+
+Antes que nada, para evitar problemas al subir archivos de tamaño variable y asumiendo que aun no se han modificado las configuraciones en PHP, procederemos a modificar el tamaño permitido para los archivos que vayamos a subir en nuestros cursos.
+
+Para esto verificaremos el estado de los parametros upload_max_filesize y post_max_size.
 </p>
+
+<pre>
+root@b8d4a0751aee:/etc/php5# rgrep post_max_size *
+
+apache2/php.ini:post_max_size = 8M
+cgi/php.ini:post_max_size = 8M
+cli/php.ini:post_max_size = 8M
+fpm/php.ini:post_max_size = 8M
+</pre>
+
+
+<pre>
+root@b8d4a0751aee:/etc/php5# rgrep upload_max_filesize *
+
+apache2/php.ini:upload_max_filesize = 2M
+cgi/php.ini:upload_max_filesize = 2M
+cli/php.ini:upload_max_filesize = 2M
+fpm/php.ini:upload_max_filesize = 2M
+</pre>
+
+
+<p>
+Para Nginx tenemos que modificar el valor client_max_body_size y colocar el tamaño maximo que deseamos permitir.
+
+</p>
+
+
 <p>
 Nginx: La configuración para nuestro sitio de ejemplo my.chamilo10.net seria la siguiente:
 <pre>
