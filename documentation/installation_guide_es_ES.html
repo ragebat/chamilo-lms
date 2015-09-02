@@ -787,10 +787,10 @@ por ejemplo. El efecto debería ser inmediato.
 <h2><a name="14._alter_conf"></a>14. Configuraciones opcionales para Apache y Nginx</h2>
 <p>
 Dadas las nuevas actualizaciones de los servidores web y la fragilidad en cuanto a seguridad de archivos facilmente localizables por atacantes como los htaccess, es necesario restringir las configuraciones a un solo archivo. A continuación se muestran dos ejemplos de configuración de modo que no se dependa del archivo htaccess.
+</p>
 
-
-Antes que nada, para evitar problemas al subir archivos de tamaño variable y asumiendo que aun no se han modificado las configuraciones en PHP, procederemos a modificar el tamaño permitido para los archivos que vayamos a subir en nuestros cursos.
-
+<p>
+Cuando subimos archivos a través de PHP, normalmente existen restricciones en cuanto al tamaño máximo por archivo que podemos subir. El valor mas comun de tamaño maximo es alrededor de 2MB por archivo y en nuestro escenario en particular puede ser un valor muy bajo.
 Para esto verificaremos el estado de los parametros upload_max_filesize y post_max_size.
 </p>
 
